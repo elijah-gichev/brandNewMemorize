@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["🚗", "🚕", "🚙", "🚌", "🦼", "🛴", "🚲", " 🛵", "🚁", "🚀", "🗿", "🎠", "🏠", "🏡", "🏭"]
+    let vehicles = ["🚗", "🚕", "🚙", "🚌", "🦼", "🛴", "🚲", " 🛵", "🚁", "🚀"]
+    let flags = ["🇦🇺", "🇦🇹", "🇩🇿", "🇦🇿", "🇦🇸", "🇦🇶", "🇦🇲", "🇧🇸", "🇧🇾", "🇧🇬", "🇧🇴"]
+    let sports = ["⚽️", "🏀", "🥎", "🎾", "🎱", "🥏", "🏐", "🪀", "🏓", "🏉", "🏈", "⚾️", "🏐", "🏹", "🥅"]
     
-    @State var emojiCount = 4
+    @State var emojis = ["🚗", "🚕", "🚙", "🚌", "🦼", "🛴", "🚲", " 🛵", "🚁", "🚀"]
+    @State var currentCount = 4
+    
     
     var body: some View {
         VStack{
             Text("Memorize!")
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))] ){
-                    ForEach(emojis[0..<emojiCount], id: \.self){ emoji in
+                    ForEach(emojis[0..<currentCount], id: \.self){ emoji in
                         CardView(content: emoji)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -26,9 +30,9 @@ struct ContentView: View {
             .foregroundColor(.red)
   
             HStack{
-                removeButton
-                Spacer()
-                addButton
+                vehicleThemeButton
+                flagThemeButton
+                sportThemeButton
             }
             .font(.largeTitle)
             .padding(.horizontal)
@@ -36,26 +40,46 @@ struct ContentView: View {
         }
     }
     
-    
-    var removeButton: some View{
-        Button{
-            if emojiCount > 1{
-                emojiCount -= 1
+    var vehicleThemeButton: some View{
+            Button{
+                currentCount = Int.random(in: 4...vehicles.count)
+                emojis = vehicles.shuffled()
+            } label: {
+                VStack{
+                    Image(systemName: "car")
+                    Text("vehicles").font(.caption)
+                }
             }
-        } label: {
-            Image(systemName: "minus.circle")
-        }
+            .padding(.horizontal)
     }
     
-    var addButton: some View{
-        Button{
-            if emojiCount < emojis.count{
-                emojiCount += 1
+    var flagThemeButton: some View{
+            Button{
+                currentCount = Int.random(in: 4...flags.count)
+                emojis = flags.shuffled()
+            } label: {
+                VStack{
+                    Image(systemName: "flag")
+                    Text("flags").font(.caption)
+                }
             }
-        } label: {
-            Image(systemName: "plus.circle")
-        }
+            .padding(.horizontal)
     }
+    
+    var sportThemeButton: some View{
+            Button{
+                currentCount = Int.random(in: 4...sports.count)
+                emojis = sports.shuffled()
+            } label: {
+                VStack{
+                    Image(systemName: "heart")
+                    Text("sports").font(.caption)
+                }
+            }
+            .padding(.horizontal)
+    }
+    
+
 }
 
 
